@@ -1,10 +1,10 @@
 package com.example.reactivedemo;
 
 import com.example.reactivedemo.entities.Student;
+import com.example.reactivedemo.entities.StudentRequest;
 import com.example.reactivedemo.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +23,7 @@ public class StudentController {
 
     private final StudentService service;
 
-    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping("all")
     Flux<Student> findAll() {
         return service.findAll();
     }
@@ -31,6 +31,11 @@ public class StudentController {
     @GetMapping("/{id}")
     public Mono<Student> findById(@PathVariable Long id) {
         return service.findById(id);
+    }
+
+    @GetMapping("/{firstName}")
+    public Flux<Student> findByFirstName(@PathVariable String firstName) {
+        return service.findAllByFirstName(firstName);
     }
 
     @PostMapping
